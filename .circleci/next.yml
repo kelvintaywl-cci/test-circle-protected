@@ -28,6 +28,12 @@ jobs:
       - checkout
       - run: |
           echo "test"
+  build2:
+    executor: base
+    steps:
+      - checkout
+      - run: |
+          sleep 30s
 
 workflows:
   no-op:
@@ -52,7 +58,7 @@ workflows:
       - build
       - done:
           requires:
-            - build
+            - build2
 
   app3:
     when: << pipeline.parameters.build-app3 >>
