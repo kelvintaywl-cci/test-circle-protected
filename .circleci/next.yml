@@ -23,13 +23,8 @@ jobs:
     steps:
       - run: echo "DONE"
   build:
-    parameters:
-      workdir:
-        type: string
     executor: base
     steps:
-      - checkout:
-          path: ~/project
       - run: |
           echo "test"
 
