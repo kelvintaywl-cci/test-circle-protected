@@ -1,0 +1,67 @@
+version: 2.1
+
+parameters:
+  build-app1:
+    type: boolean
+    default: false
+  build-app2:
+    type: boolean
+    default: false
+  build-app3:
+    type: boolean
+    default: false
+
+executors:
+  base:
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+
+jobs:
+  done:
+    executor: base
+    steps:
+      - run: echo "DONE"
+  build:
+    parameters:
+      workdir:
+        type: string
+    executor: base
+    steps:
+      - checkout:
+          path: ~/project
+      - run: |
+          echo "test"
+
+workflows:
+  no-op:
+    when:
+      and:
+        - not: << pipeline.parameters.build-app1 >>
+        - not: << pipeline.parameters.build-app2 >>
+        - not: << pipeline.parameters.build-app3 >>
+    jobs:
+      - done
+
+  app1:
+    when: << pipeline.parameters.build-app1 >>
+    jobs:
+      - build:
+      - done:
+          requires:
+            - build
+  app2:
+    when: << pipeline.parameters.build-app2 >>
+    jobs:
+      - build:
+      - done:
+          requires:
+            - build
+
+  app3:
+    when: << pipeline.parameters.build-app3 >>
+    jobs:
+      - build:
+      - done:
+          requires:
+            - build        
