@@ -22,31 +22,10 @@ jobs:
     executor: base
     steps:
       - run: echo "DONE"
-  done_not_running_app1:
+  done_running:
     executor: base
     steps:
       - run: echo "DONE"
-  done_not_running_app2:
-    executor: base
-    steps:
-      - run: echo "DONE"
-  done_not_running_app3:
-    executor: base
-    steps:
-      - run: echo "DONE"
-  done_running_app1:
-    executor: base
-    steps:
-      - run: echo "DONE"
-  done_running_app2:
-    executor: base
-    steps:
-      - run: echo "DONE"
-  done_running_app3:
-    executor: base
-    steps:
-      - run: echo "DONE"
-      
   build:
     executor: base
     steps:
@@ -68,50 +47,27 @@ jobs:
           sleep 60s
 
 workflows:
-  # not-running:
-  #   when:
-  #     or:
-  #       - not: << pipeline.parameters.build-app1 >>
-  #       - not: << pipeline.parameters.build-app2 >>
-  #       - not: << pipeline.parameters.build-app3 >>
-  #   jobs:
-  #     - done_not_running
-
-
-  not-running-app1:
+  not-running:
     when:
       or:
         - not: << pipeline.parameters.build-app1 >>
-    jobs:
-      - done_not_running_app1
-
-  not-running-app2:
-    when:
-      or:
         - not: << pipeline.parameters.build-app2 >>
-    jobs:
-      - done_not_running_app2
-
-  not-running-app3:
-    when:
-      or:
         - not: << pipeline.parameters.build-app3 >>
     jobs:
-      - done_not_running_app3
-
+      - done_not_running
 
   app1:
     when: << pipeline.parameters.build-app1 >>
     jobs:
       - build
-      - done_running_app1:
+      - done_running:
           requires:
             - build
   app2:
     when: << pipeline.parameters.build-app2 >>
     jobs:
       - build2
-      - done_running_app2:
+      - done_running:
           requires:
             - build2
 
@@ -119,7 +75,7 @@ workflows:
     when: << pipeline.parameters.build-app3 >>
     jobs:
       - build3
-      - done_running_app3:
+      - done_running:
           requires:
             - build3    
 
