@@ -35,6 +35,13 @@ jobs:
       - run: |
           sleep 30s
 
+  build3:
+    executor: base
+    steps:
+      - checkout
+      - run: |
+          sleep 60s
+
 workflows:
   no-op:
     when:
@@ -63,8 +70,8 @@ workflows:
   app3:
     when: << pipeline.parameters.build-app3 >>
     jobs:
-      - build
+      - build3
       - done:
           requires:
-            - build        
+            - build3    
 
