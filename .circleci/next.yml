@@ -47,7 +47,7 @@ jobs:
           sleep 60s
 
 workflows:
-  no-op:
+  not-running:
     when:
       or:
         - not: << pipeline.parameters.build-app1 >>
