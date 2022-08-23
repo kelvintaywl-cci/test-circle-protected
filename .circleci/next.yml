@@ -49,7 +49,7 @@ jobs:
 workflows:
   no-op:
     when:
-      and:
+      or:
         - not: << pipeline.parameters.build-app1 >>
         - not: << pipeline.parameters.build-app2 >>
         - not: << pipeline.parameters.build-app3 >>
