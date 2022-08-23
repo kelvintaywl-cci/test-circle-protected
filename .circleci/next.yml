@@ -46,14 +46,14 @@ workflows:
   app1:
     when: << pipeline.parameters.build-app1 >>
     jobs:
-      - build:
+      - build
       - done:
           requires:
             - build
   app2:
     when: << pipeline.parameters.build-app2 >>
     jobs:
-      - build:
+      - build
       - done:
           requires:
             - build
@@ -61,7 +61,7 @@ workflows:
   app3:
     when: << pipeline.parameters.build-app3 >>
     jobs:
-      - build:
+      - build
       - done:
           requires:
             - build        
