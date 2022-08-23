@@ -55,7 +55,7 @@ workflows:
   app2:
     when: << pipeline.parameters.build-app2 >>
     jobs:
-      - build
+      - build2
       - done:
           requires:
             - build2
