@@ -22,10 +22,19 @@ jobs:
     executor: base
     steps:
       - run: echo "DONE"
-  done_running:
+  done_running_app1:
     executor: base
     steps:
       - run: echo "DONE"
+  done_running_app2:
+    executor: base
+    steps:
+      - run: echo "DONE"
+  done_running_app3:
+    executor: base
+    steps:
+      - run: echo "DONE"
+      
   build:
     executor: base
     steps:
@@ -60,14 +69,14 @@ workflows:
     when: << pipeline.parameters.build-app1 >>
     jobs:
       - build
-      - done_running:
+      - done_running_app1:
           requires:
             - build
   app2:
     when: << pipeline.parameters.build-app2 >>
     jobs:
       - build2
-      - done_running:
+      - done_running_app2:
           requires:
             - build2
 
@@ -75,7 +84,7 @@ workflows:
     when: << pipeline.parameters.build-app3 >>
     jobs:
       - build3
-      - done_running:
+      - done_running_app3:
           requires:
             - build3    
 
