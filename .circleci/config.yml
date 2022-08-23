@@ -12,6 +12,6 @@ workflows:
       - path/filter:
           config-path: .circleci/next.yml
           mapping: |
-            app1/.* build-app1 true
-            app2/.* build-app2 true
-            app3/.* build-app3 true
+            apps/app1/.* build-app1 true
+            apps/app2/.* build-app2 true
+            apps/app3/.* build-app3 true
