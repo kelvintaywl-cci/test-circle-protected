@@ -25,6 +25,7 @@ jobs:
   build:
     executor: base
     steps:
+      - checkout:
       - run: |
           echo "test"
 
