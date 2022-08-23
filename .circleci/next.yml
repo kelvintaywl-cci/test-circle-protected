@@ -18,7 +18,11 @@ executors:
     resource_class: small
 
 jobs:
-  done:
+  done_not_running:
+    executor: base
+    steps:
+      - run: echo "DONE"
+  done_running:
     executor: base
     steps:
       - run: echo "DONE"
@@ -50,20 +54,20 @@ workflows:
         - not: << pipeline.parameters.build-app2 >>
         - not: << pipeline.parameters.build-app3 >>
     jobs:
-      - done
+      - done_not_running
 
   app1:
     when: << pipeline.parameters.build-app1 >>
     jobs:
       - build
-      - done:
+      - done_running:
           requires:
             - build
   app2:
     when: << pipeline.parameters.build-app2 >>
     jobs:
       - build2
-      - done:
+      - done_running:
           requires:
             - build2
 
@@ -71,7 +75,7 @@ workflows:
     when: << pipeline.parameters.build-app3 >>
     jobs:
       - build3
-      - done:
+      - done_running:
           requires:
             - build3    
 
