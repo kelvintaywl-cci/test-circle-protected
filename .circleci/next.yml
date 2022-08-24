@@ -90,7 +90,7 @@ common-config: &common-config
           build-app1: << pipeline.parameters.build-app1 >>
           build-app2: << pipeline.parameters.build-app2 >>
           build-app3: << pipeline.parameters.build-app3 >>
-          trigger-all: << pipeline.parameters.trigger_all >>                
+          trigger-all: << pipeline.parameters.trigger-all >>                
     - checkout
     - run: |
         echo "test common"
