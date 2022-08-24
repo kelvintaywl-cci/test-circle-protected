@@ -86,7 +86,6 @@ jobs:
 
   build-app1:
     <<: *common-config
-    steps:
     - unless:
     condition: 
       or: 
@@ -97,7 +96,6 @@ jobs:
 
   build-app2:
     <<: *common-config
-    steps:
     - unless:
     condition: 
       or: 
@@ -108,7 +106,6 @@ jobs:
 
   build-app3:
     <<: *common-config
-    steps:
     - unless:
     condition: 
       or: 
