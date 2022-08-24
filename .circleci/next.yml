@@ -20,54 +20,87 @@ executors:
       - image: cimg/base:stable
     resource_class: small
 
+
+# jobs:
+#   tests-done:
+#     executor: base
+#     steps:
+#       - run: echo "DONE"
+#   build-app1:
+#     executor: base
+#     steps:
+#       - unless:
+#           condition: 
+#             or: 
+#               - << pipeline.parameters.build-app1 >>
+#               - << pipeline.parameters.trigger-all >>
+#           steps:
+#             - run: |
+#                 circleci-agent step halt
+#       - checkout
+#       - run: |
+#           echo "test"
+#   build-app2:
+#     executor: base
+#     steps:
+#       - unless:
+#           condition: 
+#             or: 
+#               - << pipeline.parameters.build-app2 >>
+#               - << pipeline.parameters.trigger-all >>
+#           steps:
+#             - run: |
+#                 circleci-agent step halt
+#       - checkout
+#       - run: |
+#           sleep 30s
+
+#   build-app3:
+#     executor: base
+#     steps:
+#       - unless:
+#           condition: 
+#             or: 
+#               - << pipeline.parameters.build-app3 >>
+#               - << pipeline.parameters.trigger-all >>
+#           steps:
+#             - run: |
+#                 circleci-agent step halt
+#       - checkout
+#       - run: |
+#           sleep 60s
+
+common-config: &common-config
+  executor: base
+  steps:
+    - unless:
+        condition: 
+          or: 
+            - << pipeline.parameters.build-app1 >>
+            - << pipeline.parameters.build-app2 >>
+            - << pipeline.parameters.build-app3 >>
+            - << pipeline.parameters.trigger-all >>
+        steps:
+          - run: |
+              circleci-agent step halt
+    - checkout
+    - run: |
+        echo "test common"
+
 jobs:
+
   tests-done:
     executor: base
     steps:
       - run: echo "DONE"
-  build-app1:
-    executor: base
-    steps:
-      - unless:
-          condition: 
-            or: 
-              - << pipeline.parameters.build-app1 >>
-              - << pipeline.parameters.trigger-all >>
-          steps:
-            - run: |
-                circleci-agent step halt
-      - checkout
-      - run: |
-          echo "test"
-  build-app2:
-    executor: base
-    steps:
-      - unless:
-          condition: 
-            or: 
-              - << pipeline.parameters.build-app2 >>
-              - << pipeline.parameters.trigger-all >>
-          steps:
-            - run: |
-                circleci-agent step halt
-      - checkout
-      - run: |
-          sleep 30s
 
+  build-app1:
+    <<: *common-config
+  build-app2:
+    <<: *common-config   
   build-app3:
-    executor: base
-    steps:
-      - unless:
-          condition: 
-            or: 
-              - << pipeline.parameters.build-app3 >>
-              - << pipeline.parameters.trigger-all >>
-          steps:
-            - run: |
-                circleci-agent step halt
-      - checkout
-      - run: |
-          sleep 60s
+    <<: *common-config
+    
 
 workflows:
   just-this-one:
