@@ -73,6 +73,7 @@ executors:
 common-config: &common-config
   executor: base
   steps:
+    unless
     - unless:
         condition: 
           or: 
@@ -81,8 +82,24 @@ common-config: &common-config
             - << pipeline.parameters.build-app3 >>
             - << pipeline.parameters.trigger-all >>
         steps:
-          - run: |
-              circleci-agent step halt
+          - run:
+              name: stop early unless relevant
+              command: |
+                # see https://circleci.com/docs/env-vars#built-in-environment-variables
+                # CIRCLE_JOB returns the name of the job (e.g., "build-app1", "build-app2", etc)
+                # so, TO_CONTINUE will evaluate and be set to the value of the env var that matches the current job's name
+                export TO_CONTINUE=$(eval echo $CIRCLE_JOB)
+                if [ ! $TO_CONTINUE ] && [ ! $trigger-all ]; then
+                  # we stop the job early if:
+                  # $trigger-all is NOT TRUE or
+                  # env var based on job name says FALSE
+                  circleci-agent step halt
+                fi
+              environment:
+                build-app1: << pipeline.parameters.build-app1 >>
+                build-app2: << pipeline.parameters.build-app2 >>
+                build-app3: << pipeline.parameters.build-app3 >>
+                trigger-all: << pipeline.parameters.trigger_all >>                
     - checkout
     - run: |
         echo "test common"
