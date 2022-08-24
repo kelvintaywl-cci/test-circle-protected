@@ -63,7 +63,7 @@ workflows:
       - build-app1
       - build-app2
       - build-app3
-      - done:
+      - tests-done:
           requires:
             - build-app1
             - build-app2
