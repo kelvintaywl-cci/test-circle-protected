@@ -29,7 +29,9 @@ jobs:
     executor: base
     steps:
       - unless:
-          condition: [ << pipeline.parameters.build-app1 >>, << pipeline.parameters.trigger-all >>]
+          and:
+            - << pipeline.parameters.build-app1 >> 
+            - << pipeline.parameters.trigger-all >>
           steps:
             - run: |
                 circleci-agent step halt
@@ -40,7 +42,9 @@ jobs:
     executor: base
     steps:
       - unless:
-          condition: [ << pipeline.parameters.build-app2 >>, << pipeline.parameters.trigger-all >>]
+          and:
+            - << pipeline.parameters.build-app2 >> 
+            - << pipeline.parameters.trigger-all >>
           steps:
             - run: |
                 circleci-agent step halt
@@ -52,7 +56,9 @@ jobs:
     executor: base
     steps:
       - unless:
-          condition: [ << pipeline.parameters.build-app3 >>, << pipeline.parameters.trigger-all >>]
+          and:
+            - << pipeline.parameters.build-app3 >> 
+            - << pipeline.parameters.trigger-all >>
           steps:
             - run: |
                 circleci-agent step halt
