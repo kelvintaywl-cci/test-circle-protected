@@ -86,33 +86,33 @@ jobs:
 
   build-app1:
     <<: *common-config
-    - unless:
-    condition: 
-      or: 
-        - << pipeline.parameters.build-app1 >>
-    steps:
-      - run: |
-          circleci-agent step halt
+      - unless:
+      condition: 
+        or: 
+          - << pipeline.parameters.build-app1 >>
+      steps:
+        - run: |
+            circleci-agent step halt
 
   build-app2:
     <<: *common-config
-    - unless:
-    condition: 
-      or: 
-        - << pipeline.parameters.build-app1 >>
-    steps:
-      - run: |
-          circleci-agent step halt
+      - unless:
+      condition: 
+        or: 
+          - << pipeline.parameters.build-app1 >>
+      steps:
+        - run: |
+            circleci-agent step halt
 
   build-app3:
     <<: *common-config
-    - unless:
-    condition: 
-      or: 
-        - << pipeline.parameters.build-app1 >>
-    steps:
-      - run: |
-          circleci-agent step halt
+      - unless:
+      condition: 
+        or: 
+          - << pipeline.parameters.build-app1 >>
+      steps:
+        - run: |
+            circleci-agent step halt
     
 
 workflows:
