@@ -73,16 +73,6 @@ executors:
 common-config: &common-config
   executor: base
   steps:
-    - unless:
-        condition: 
-          or: 
-            - << pipeline.parameters.build-app1 >>
-            - << pipeline.parameters.build-app2 >>
-            - << pipeline.parameters.build-app3 >>
-            - << pipeline.parameters.trigger-all >>
-        steps:
-          - run: |
-              circleci-agent step halt
     - checkout
     - run: |
         echo "test common"
@@ -95,10 +85,35 @@ jobs:
       - run: echo "DONE"
 
   build-app1:
+    steps:
+      - unless:
+      condition: 
+        or: 
+          - << pipeline.parameters.build-app1 >>
+      steps:
+        - run: |
+            circleci-agent step halt
     <<: *common-config
+
   build-app2:
-    <<: *common-config   
+    steps:
+      - unless:
+      condition: 
+        or: 
+          - << pipeline.parameters.build-app2 >>
+      steps:
+        - run: |
+            circleci-agent step halt
+    <<: *common-config
   build-app3:
+    steps:
+      - unless:
+      condition: 
+        or: 
+          - << pipeline.parameters.build-app3 >>
+      steps:
+        - run: |
+            circleci-agent step halt
     <<: *common-config
     
 
