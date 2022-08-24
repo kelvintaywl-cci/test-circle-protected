@@ -91,7 +91,6 @@ common-config: &common-config
             - << pipeline.parameters.build-app1 >>
             - << pipeline.parameters.build-app2 >>
             - << pipeline.parameters.build-app3 >>
-            - << pipeline.parameters.trigger-all >>
         steps:
           - run: |
               circleci-agent step halt
