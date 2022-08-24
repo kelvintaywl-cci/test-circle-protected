@@ -15,5 +15,6 @@ workflows:
             apps/app1/.* build-app1 true
             apps/app2/.* build-app2 true
             apps/app3/.* build-app3 true
+            .circleci/.* trigger-all true
 
 

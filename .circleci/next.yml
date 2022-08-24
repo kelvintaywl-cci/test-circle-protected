@@ -10,6 +10,9 @@ parameters:
   build-app3:
     type: boolean
     default: false
+  trigger-all:
+    type: boolean
+    default: false
 
 executors:
   base:
@@ -68,5 +71,5 @@ workflows:
             - build-app1
             - build-app2
             - build-app3
-            
+
 
