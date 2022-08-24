@@ -18,65 +18,53 @@ executors:
     resource_class: small
 
 jobs:
-  done_not_running:
+  tests-done:
     executor: base
     steps:
       - run: echo "DONE"
-  done_running:
+  build-app1:
     executor: base
     steps:
-      - run: echo "DONE"
-  build:
-    executor: base
-    steps:
+      - unless:
+          condition: << pipeline.parameters.build-app-1 >>
+          steps:
+            - run: |
+                circleci-agent step halt
       - checkout
       - run: |
           echo "test"
-  build2:
+  build-app2:
     executor: base
     steps:
+      - unless:
+          condition: << pipeline.parameters.build-app-2 >>
+          steps:
+            - run: |
+                circleci-agent step halt
       - checkout
       - run: |
           sleep 30s
 
-  build3:
+  build-app3:
     executor: base
     steps:
+      - unless:
+          condition: << pipeline.parameters.build-app-3 >>
+          steps:
+            - run: |
+                circleci-agent step halt
       - checkout
       - run: |
           sleep 60s
 
 workflows:
-  not-running:
-    when:
-      or:
-        - not: << pipeline.parameters.build-app1 >>
-        - not: << pipeline.parameters.build-app2 >>
-        - not: << pipeline.parameters.build-app3 >>
+  just-this-one:
     jobs:
-      - done_not_running
-      
-
-  app1:
-    when: << pipeline.parameters.build-app1 >>
-    jobs:
-      - build
-      - done_running:
+      - build-repo-a
+      - build-repo-b
+      - done:
           requires:
-            - build
-  app2:
-    when: << pipeline.parameters.build-app2 >>
-    jobs:
-      - build2
-      - done_running:
-          requires:
-            - build2
-
-  app3:
-    when: << pipeline.parameters.build-app3 >>
-    jobs:
-      - build3
-      - done_running:
-          requires:
-            - build3    
+            - build-app1
+            - build-app2
+            - build-app2
 
