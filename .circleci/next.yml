@@ -85,7 +85,8 @@ jobs:
       - run: echo "DONE"
 
   build-app1:
-    steps:
+    <<: *common-config
+      steps:
       - unless:
       condition: 
         or: 
@@ -93,28 +94,28 @@ jobs:
       steps:
         - run: |
             circleci-agent step halt
-    <<: *common-config
 
   build-app2:
-    steps:
+    <<: *common-config
+      steps:
       - unless:
       condition: 
         or: 
-          - << pipeline.parameters.build-app2 >>
+          - << pipeline.parameters.build-app1 >>
       steps:
         - run: |
             circleci-agent step halt
-    <<: *common-config
+
   build-app3:
-    steps:
+    <<: *common-config
+      steps:
       - unless:
       condition: 
         or: 
-          - << pipeline.parameters.build-app3 >>
+          - << pipeline.parameters.build-app1 >>
       steps:
         - run: |
             circleci-agent step halt
-    <<: *common-config
     
 
 workflows:
