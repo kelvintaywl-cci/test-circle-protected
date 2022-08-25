@@ -1,16 +1,16 @@
 version: 2.1
 
 parameters:
-  build-app1:
+  build_app1:
     type: boolean
     default: false
-  build-app2:
+  build_app2:
     type: boolean
     default: false
-  build-app3:
+  build_app3:
     type: boolean
     default: false
-  trigger-all:
+  trigger_all:
     type: boolean
     default: false
 
@@ -27,10 +27,10 @@ common-config: &common-config
         name: stop early unless relevant
         command: |
           # DEBUG
-          printenv build-app1 || true
-          printenv build-app2 || true
-          printenv build-app3 || true
-          printenv trigger-all || true
+          printenv build_app1 || true
+          printenv build_app2 || true
+          printenv build_app3 || true
+          printenv trigger_all || true
 
           # see https://circleci.com/docs/env-vars#built-in-environment-variables
           # CIRCLE_JOB returns the name of the job (e.g., "build-app1", "build-app2", etc)
@@ -38,46 +38,45 @@ common-config: &common-config
           export TO_CONTINUE=$(eval echo "\$$CIRCLE_JOB")
           printenv TO_CONTINUE
 
-          if [ ! $TO_CONTINUE ] && [ ! $trigger-all ]; then
+          # env vars are string values
+          if [ "${TO_CONTINUE}" != "1" ] && [ "${trigger_all}" != "1" ]; then
             # we stop the job early if:
-            # $trigger-all is NOT TRUE or
+            # $trigger_all is NOT TRUE or
             # env var based on job name says FALSE
             circleci-agent step halt
           fi
         environment:
-          build-app1: << pipeline.parameters.build-app1 >>
-          build-app2: << pipeline.parameters.build-app2 >>
-          build-app3: << pipeline.parameters.build-app3 >>
-          trigger-all: << pipeline.parameters.trigger-all >>                
+          build_app1: << pipeline.parameters.build_app1 >>
+          build_app2: << pipeline.parameters.build_app2 >>
+          build_app3: << pipeline.parameters.build_app3 >>
+          trigger_all: << pipeline.parameters.trigger_all >>
     - checkout
     - run: |
         echo "test common"
 
 jobs:
-
-  tests-done:
+  tests_done:
     executor: base
     steps:
       - run: echo "DONE"
-
-  build-app1:
+  build_app1:
     <<: *common-config
-  build-app2:
+  build_app2:
     <<: *common-config   
-  build-app3:
+  build_app3:
     <<: *common-config
     
 
 workflows:
   just-this-one:
     jobs:
-      - build-app1
-      - build-app2
-      - build-app3
-      - tests-done:
+      - build_app1
+      - build_app2
+      - build_app3
+      - tests_done:
           requires:
-            - build-app1
-            - build-app2
-            - build-app3
+            - build_app1
+            - build_app2
+            - build_app3
 
 
