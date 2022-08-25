@@ -35,7 +35,7 @@ common-config: &common-config
           # see https://circleci.com/docs/env-vars#built-in-environment-variables
           # CIRCLE_JOB returns the name of the job (e.g., "build-app1", "build-app2", etc)
           # so, TO_CONTINUE will evaluate and be set to the value of the env var that matches the current job's name
-          export TO_CONTINUE=$(eval echo $$CIRCLE_JOB)
+          export TO_CONTINUE=$(eval echo "\$$CIRCLE_JOB")
           printenv TO_CONTINUE
 
           if [ ! $TO_CONTINUE ] && [ ! $trigger-all ]; then
